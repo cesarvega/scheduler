@@ -1,5 +1,68 @@
-<div class="page-layout blank p-24" fusePerfectScrollbar>
+<div id="price-tables" class="p-12 page-layout simple fullwidth" fusePerfectScrollbar>
 
-    <h2>{{'SAMPLE.HELLO' | translate}}</h2>
+    <div fxFlex fxLayout="row wrap">
 
+
+        <div fxFlex fxLayout="column" fxLayoutGap="12px" fxLayoutAlign="start center">
+
+            <div class="fuse-card" >
+                <img src="assets/images/logos/bi-logo.svg" class="p-16">
+                <div class="p-16">
+                    <div class="h1">Welcome</div>
+                    <div class="h3">Please schedule a meeting</div>
+                    <!-- <div class="h4 secondary-text">today: {{today | date: 'yyyy-MM-dd'}}</div> -->
+                </div>
+                <div class="p-16 pt-0 line-height-1.75" width="800">
+                    <div fxFlex fxLayout="column" [formGroup]="scheduleForm">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Appoinment Date</mat-label>
+                            <input matInput formControlName="date" [matDatepicker]="picker" placeholder="chose a date" required
+                                [min]="today | date: 'yyyy-MM-dd'">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker color="secondary"></mat-datepicker>
+                        </mat-form-field>
+                        
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Meeting Type</mat-label>
+                            <input matInput  formControlName="type" style="display:none;" >
+                            <mat-radio-group formControlName="type">
+                                <mat-radio-button class="secondary-text p-24" 
+                                 *ngFor="let item of callType" 
+                                 [value]="item" [checked]="item === 'call'" >{{item}}</mat-radio-button>
+                            </mat-radio-group>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Appoinment Time</mat-label>
+                            <input matInput formControlName="time" type="time" placeholder="chose a date"  required>                           
+                        </mat-form-field>
+
+                        <!-- <mat-form-field appearance="outline">
+                            <mat-label>Time for metting</mat-label>
+                            <select formControlName="period" matNativeControl required>
+                                <option value="1 hour">1 hour</option>
+                                <option value="2 hour">2 hour</option>
+                                <option value="3 hour">3 hour</option>
+                                <option value="4 hour">4 hour</option>
+                            </select>
+                        </mat-form-field> -->
+                        <mat-form-field appearance="outline">
+                            <mat-label>Notes</mat-label>
+                            <textarea formControlName="note" matInput placeholder="write your note" [rows]="5"
+                                [matTextareaAutosize]="true"></textarea>
+                        </mat-form-field>
+                        <button type="submit" (click)="onSubmit()"  [disabled]="!scheduleForm.valid">
+                            Submit
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        
+
+    </div>
 </div>
+
