@@ -17,6 +17,7 @@ import { fuseConfig } from 'app/fuse-config';
 import { AppComponent } from 'app/app.component';
 import { LayoutModule } from 'app/layout/layout.module';
 import { SchedulerModule } from 'app/main/scheduler/scheduler.module';
+import { APP_BASE_HREF } from '@angular/common';
 
 const appRoutes: Routes = [
     {
@@ -58,8 +59,9 @@ const appRoutes: Routes = [
     ],
     bootstrap   : [
         AppComponent
-    ]
+    ],
+    providers: [{ provide: APP_BASE_HREF, useValue: '/scheduler/' }]
 })
 export class AppModule
-{
+{   
 }
