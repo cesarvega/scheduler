@@ -68,4 +68,12 @@ export class SchedulerComponent
         console.log(this.scheduleForm.value);       
         this._route.navigateByUrl('thankyou');
       }
+
+      isNumberKey(evt): boolean{
+        const charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode !== 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
+              return false;
+        }
+        return true;
+      }
 }
