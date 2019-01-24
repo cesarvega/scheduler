@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
 
@@ -8,20 +8,29 @@ import { locale as turkish } from './i18n/tr';
 import { FuseConfigService } from '@fuse/services/config.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { FormService } from './form-service';
 
 @Component({
-    selector   : 'scheduler',
+    selector: 'scheduler',
     templateUrl: './scheduler.component.html',
-    styleUrls  : ['./scheduler.component.scss'],
+    styleUrls: ['./scheduler.component.scss'],
     providers: [DatePipe]
 })
-export class SchedulerComponent
-{
-   
+export class SchedulerComponent implements OnInit {
+
+
+    form: FormGroup;
     today: Date;
     options: FormGroup;
     callType = ['call', 'person'];
-  
+    selected = 'Eastern Time (EST)';
+    call = 'call';
+    time = '07:00';
+    scheduleForm: any;
+    isValidForm: boolean;
+    formErrors: any;
     /**
      * Constructor
      *
@@ -30,14 +39,14 @@ export class SchedulerComponent
     constructor(
         private _fuseTranslationLoaderService: FuseTranslationLoaderService,
         private _fuseConfigService: FuseConfigService,
-        fb: FormBuilder,
+        private _formBuilder: FormBuilder,
+        public _FormService: FormService,
         private _route: Router,
-       datePipe: DatePipe
-    )
-    {
+        datePipe: DatePipe
+    ) {
         this._fuseTranslationLoaderService.loadTranslations(english, turkish);
-         // Configure the layout
-         this._fuseConfigService.config = {
+        // Configure the layout
+        this._fuseConfigService.config = {
             layout: {
                 navbar: {
                     hidden: true
@@ -53,27 +62,36 @@ export class SchedulerComponent
                 }
             }
         };
-
-          this.today = new Date();
+        
+        this.today = new Date();
+        this.formErrors = {
+            date: {},
+            type: {},
+            time: {},
+            timezone: {},
+            note: {}
+        };
     }
 
-    scheduleForm = new FormGroup({
-        date: new FormControl('', Validators.required),
-        type: new FormControl(''),
-        time: new FormControl('', Validators.required),     
-        note: new FormControl('', Validators.required)
-      });
 
-      onSubmit(): void{
-        console.log(this.scheduleForm.value);       
-        this._route.navigateByUrl('thankyou');
-      }
+    ngOnInit(): void {
+        this.form = this._formBuilder.group({
+            date: ['', Validators.required],
+            type: ['', Validators.required],
+            time: ['', Validators.required],
+            timezone: ['', Validators.required],
+            note: ['', Validators.required]
+        });    
+    }
 
-      isNumberKey(evt): boolean{
-        const charCode = (evt.which) ? evt.which : evt.keyCode;
-        if (charCode !== 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
-              return false;
+    onSubmit(): void {
+        this._FormService.markFormGroupTouched(this.form);
+        console.log(this.form.value);
+        if (this.form.valid) {
+            this.form.reset();
+            this._route.navigateByUrl('thankyou');
+        } else {
+            this.formErrors = this._FormService.validateForm(this.form, this.formErrors, false);
         }
-        return true;
-      }
+    }
 }

@@ -9,6 +9,7 @@ import { MatButtonModule, MatListModule, MatCheckboxModule, MatDialogModule, Mat
 import { SchedulerComponent } from './scheduler.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { ThankYouComponent } from './thank-you/thank-you.component';
+import { FormService } from './form-service';
 
 const routes = [
     {
@@ -59,10 +60,12 @@ const routes = [
          MatRadioModule,
          MatAutocompleteModule,
          MatTabsModule
+    
     ],
     exports     : [
         SchedulerComponent
-    ]
+    ],
+    providers:    [FormService],
 })
 
 export class SchedulerModule
