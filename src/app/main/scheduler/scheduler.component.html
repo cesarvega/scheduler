@@ -2,7 +2,6 @@
 
     <div fxFlex fxLayout="row wrap">
 
-
         <div fxFlex fxLayout="column" fxLayoutGap="12px" fxLayoutAlign="start center">
 
             <div class="fuse-card">
@@ -46,16 +45,16 @@
                             <mat-label>Time Zone</mat-label>
                             <mat-select formControlName="timezone" matNativeControl [(ngModel)]="selected" placeholder="Select time zone"
                                 required>
-                                <mat-option value="Eastern Time (EST)">Eastern Time (EST)</mat-option>
-                                <mat-option value="Central Time (CST)">Central Time (CST)</mat-option>
-                                <mat-option value="Mountain Time (MT)">Mountain Time (MT)</mat-option>
-                                <mat-option value="Pacific Time (PST)">Pacific Time (PST)</mat-option>
-                                <mat-option value="Western European Time (WET)">Western European Time (WET)</mat-option>
-                                <mat-option value="Central European Time (CET)">Central European Time (CET)</mat-option>
-                                <mat-option value="Eastern European Time (EET)">Eastern European Time (EET)</mat-option>
-                                <mat-option value="Japan Time (JPT)">Japan Time (JPT)</mat-option>
-                                <mat-option value="Korea Time (KST)">Korea Time (KST)</mat-option>
-                                <mat-option value="Brasilia Time (BRT)">Brasilia Time (BRT)</mat-option>
+                                <mat-option value="EST">Eastern Time (EST)</mat-option>
+                                <mat-option value="CST">Central Time (CST)</mat-option>
+                                <mat-option value="MT">Mountain Time (MT)</mat-option>
+                                <mat-option value="PST">Pacific Time (PST)</mat-option>
+                                <mat-option value="WET">Western European Time (WET)</mat-option>
+                                <mat-option value="CET">Central European Time (CET)</mat-option>
+                                <mat-option value="EET">Eastern European Time (EET)</mat-option>
+                                <mat-option value="JPT">Japan Time (JPT)</mat-option>
+                                <mat-option value="KST">Korea Time (KST)</mat-option>
+                                <mat-option value="BRT">Brasilia Time (BRT)</mat-option>
                             </mat-select>
                         </mat-form-field>
 
@@ -70,6 +69,12 @@
                         <button type="submit" (click)="onSubmit()">
                             Submit
                         </button>
+
+                        <ul>
+                            <li *ngFor="let item of items | async">
+                              {{ item.name }}
+                            </li>
+                          </ul>
                     </div>
 
                 </div>

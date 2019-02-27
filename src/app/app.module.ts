@@ -19,6 +19,10 @@ import { LayoutModule } from 'app/layout/layout.module';
 import { SchedulerModule } from 'app/main/scheduler/scheduler.module';
 import { APP_BASE_HREF } from '@angular/common';
 
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { environment } from '../environments/environment';
+import { FirestoreSettingsToken } from '@angular/fire/firestore';
 const appRoutes: Routes = [
     {
         path      : '**',
@@ -55,12 +59,16 @@ const appRoutes: Routes = [
         // App modules
         LayoutModule,
         SchedulerModule,
-        FlexLayoutModule
+        FlexLayoutModule,
+
+        //firebase
+        AngularFireModule.initializeApp(environment.firebaseConfig),
+        AngularFireDatabaseModule
     ],
     bootstrap   : [
         AppComponent
     ],
-    providers: [{ provide: APP_BASE_HREF, useValue: '/scheduler/' }]
+    providers: [{ provide: APP_BASE_HREF, useValue: '/scheduler/' },{ provide: FirestoreSettingsToken, useValue: {} }]
 })
 export class AppModule
 {   

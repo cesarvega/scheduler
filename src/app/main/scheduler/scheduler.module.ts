@@ -10,6 +10,7 @@ import { SchedulerComponent } from './scheduler.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { ThankYouComponent } from './thank-you/thank-you.component';
 import { FormService } from './form-service';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 const routes = [
     {
@@ -65,7 +66,7 @@ const routes = [
     exports     : [
         SchedulerComponent
     ],
-    providers:    [FormService],
+    providers:    [FormService, AngularFireAuth],
 })
 
 export class SchedulerModule

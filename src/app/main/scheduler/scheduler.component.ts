@@ -1,22 +1,21 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
 import { FuseTranslationLoaderService } from '@fuse/services/translation-loader.service';
-
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { locale as english } from './i18n/en';
 import { locale as turkish } from './i18n/tr';
 import { FuseConfigService } from '@fuse/services/config.service';
-import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 import { FormService } from './form-service';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'scheduler',
     templateUrl: './scheduler.component.html',
     styleUrls: ['./scheduler.component.scss'],
-    providers: [DatePipe]
+    providers: [AngularFirestore]
 })
 export class SchedulerComponent implements OnInit {
 
@@ -25,12 +24,14 @@ export class SchedulerComponent implements OnInit {
     today: Date;
     options: FormGroup;
     callType = ['call', 'person'];
-    selected = 'Eastern Time (EST)';
+    selected = 'EST';
     call = 'call';
     time = '07:00';
     scheduleForm: any;
     isValidForm: boolean;
+    items: Observable<any[]>;
     formErrors: any;
+    paramsArray: any;
     /**
      * Constructor
      *
@@ -41,8 +42,8 @@ export class SchedulerComponent implements OnInit {
         private _fuseConfigService: FuseConfigService,
         private _formBuilder: FormBuilder,
         public _FormService: FormService,
-        private _route: Router,
-        datePipe: DatePipe
+        private _route: Router, 
+        private paramsRouter: ActivatedRoute
     ) {
         this._fuseTranslationLoaderService.loadTranslations(english, turkish);
         // Configure the layout
@@ -62,7 +63,7 @@ export class SchedulerComponent implements OnInit {
                 }
             }
         };
-        
+
         this.today = new Date();
         this.formErrors = {
             date: {},
@@ -81,15 +82,22 @@ export class SchedulerComponent implements OnInit {
             time: ['', Validators.required],
             timezone: ['', Validators.required],
             note: ['', Validators.required]
-        });    
+        });
+
+        this.paramsRouter.queryParams
+        .subscribe(params => {
+          this.paramsArray = params.value.split(',');
+        });
     }
 
     onSubmit(): void {
+        this.form.value.date = this.form.value.date.toString();    
         this._FormService.markFormGroupTouched(this.form);
-        console.log(this.form.value);
         if (this.form.valid) {
-            this.form.reset();
-            this._route.navigateByUrl('thankyou');
+            this._FormService.addEmailAppointment(this.form.value, this.paramsArray[0], this.paramsArray[1]).subscribe(result => {
+                this.form.reset();
+                this._route.navigateByUrl('thankyou');
+            });
         } else {
             this.formErrors = this._FormService.validateForm(this.form, this.formErrors, false);
         }
