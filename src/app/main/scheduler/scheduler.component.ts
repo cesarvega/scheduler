@@ -26,12 +26,14 @@ export class SchedulerComponent implements OnInit {
     callType = ['call', 'person'];
     selected = 'EST';
     call = 'call';
-    time = '07:00';
+    time = '08:00';
     scheduleForm: any;
     isValidForm: boolean;
     items: Observable<any[]>;
     formErrors: any;
     paramsArray: any;
+    email = '';
+    directorId = '';
     /**
      * Constructor
      *
@@ -42,7 +44,7 @@ export class SchedulerComponent implements OnInit {
         private _fuseConfigService: FuseConfigService,
         private _formBuilder: FormBuilder,
         public _FormService: FormService,
-        private _route: Router, 
+        private _route: Router,
         private paramsRouter: ActivatedRoute
     ) {
         this._fuseTranslationLoaderService.loadTranslations(english, turkish);
@@ -66,7 +68,10 @@ export class SchedulerComponent implements OnInit {
 
         this.today = new Date();
         this.formErrors = {
-            date: {},
+            email: {},
+            // company: {},
+            // phone: {},
+            // address: {},
             type: {},
             time: {},
             timezone: {},
@@ -77,7 +82,11 @@ export class SchedulerComponent implements OnInit {
 
     ngOnInit(): void {
         this.form = this._formBuilder.group({
-            date: ['', Validators.required],
+            date: [''],
+            email: ['', Validators.email],
+            company: [''],
+            phone: [''],
+            address: [''],
             type: ['', Validators.required],
             time: ['', Validators.required],
             timezone: ['', Validators.required],
@@ -85,16 +94,20 @@ export class SchedulerComponent implements OnInit {
         });
 
         this.paramsRouter.queryParams
-        .subscribe(params => {
-          this.paramsArray = params.value.split(',');
-        });
+            .subscribe(params => {
+                if (params.value) {
+                    this.paramsArray = params.value.split(',');
+                    this.directorId = this.paramsArray[1]; 
+                    this.email = this.paramsArray[0];
+                }
+            });
     }
 
     onSubmit(): void {
-        this.form.value.date = this.form.value.date.toString();    
+        this.form.value.date = this.form.value.date.toString();
         this._FormService.markFormGroupTouched(this.form);
         if (this.form.valid) {
-            this._FormService.addEmailAppointment(this.form.value, this.paramsArray[0], this.paramsArray[1]).subscribe(result => {
+            this._FormService.addEmailAppointment(this.form.value, this.email, this.directorId).subscribe(result => {
                 this.form.reset();
                 this._route.navigateByUrl('thankyou');
             });

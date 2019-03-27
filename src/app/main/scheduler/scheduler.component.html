@@ -1,4 +1,4 @@
-<div id="price-tables" class="p-12 page-layout simple fullwidth" fusePerfectScrollbar>
+<div fxFlex class="page-layout p-12" fxLayoutAlign="center center">
 
     <div fxFlex fxLayout="row wrap">
 
@@ -13,15 +13,42 @@
                 <div class="p-16 pt-0 line-height-1.75" width="800">
                     <div fxFlex fxLayout="column" [formGroup]="form">
                         <mat-form-field appearance="outline">
-                            <mat-label>Appoinment Date</mat-label>
+                            <mat-label>Email </mat-label>
+                            <input type="email"  [(ngModel)]="email" formControlName="email" matInput placeholder="Email" required/>
+                            <mat-error *ngIf="true">
+                                A email is required!
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Company</mat-label>
+                            <input type="text" formControlName="company" matInput placeholder="Company" />
+                            <!-- <mat-error *ngIf="true">
+                                A note is !
+                            </mat-error> -->
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Phone</mat-label>
+                            <input type="number" formControlName="phone" matInput placeholder="Phone" />
+                            <!-- <mat-error *ngIf="true">
+                                A note is !
+                            </mat-error> -->
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Address</mat-label>
+                            <input type="text" formControlName="address" matInput placeholder="Address" />
+                            <!-- <mat-error *ngIf="true">
+                                A note is !
+                            </mat-error> -->
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Appointment Date</mat-label>
                             <input matInput formControlName="date" [matDatepicker]="picker" placeholder="select a date"
                                 required [min]="today | date: 'yyyy-MM-dd'">
-                                <mat-error *ngIf="true">
-                                        A valid date is required!
-                                    </mat-error>
+                            <mat-error *ngIf="true">
+                                A valid date is required!
+                            </mat-error>
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker color="secondary"></mat-datepicker>
-                           
                         </mat-form-field>
 
 
@@ -29,22 +56,24 @@
                             <mat-label>Meeting Type</mat-label>
                             <input matInput formControlName="type" style="display:none;" [(ngModel)]="call" required>
                             <mat-radio-group formControlName="type">
-                                <mat-radio-button class="secondary-text p-8" *ngFor="let item of callType" [value]="item">{{item}}</mat-radio-button>
+                                <mat-radio-button class="secondary-text p-8" *ngFor="let item of callType"
+                                    [value]="item">{{item}}</mat-radio-button>
                             </mat-radio-group>
                         </mat-form-field>
 
                         <mat-form-field appearance="outline">
                             <mat-label>Appoinment Time</mat-label>
-                            <input matInput formControlName="time" type="time" [(ngModel)]="time" step placeholder="chose a date" required>
+                            <input matInput formControlName="time" type="time" [(ngModel)]="time" step
+                                placeholder="chose a date" required>
                             <blockquote>
-                                <p class="font-weight-100">Meeting hours are from 7 am to 6 pm EST</p>
+                                <p class="font-weight-100">Meeting hours are from 8 am to 6 pm EST</p>
                             </blockquote>
                         </mat-form-field>
 
                         <mat-form-field appearance="outline">
                             <mat-label>Time Zone</mat-label>
-                            <mat-select formControlName="timezone" matNativeControl [(ngModel)]="selected" placeholder="Select time zone"
-                                required>
+                            <mat-select formControlName="timezone" matNativeControl [(ngModel)]="selected"
+                                placeholder="Select time zone" required>
                                 <mat-option value="EST">Eastern Time (EST)</mat-option>
                                 <mat-option value="CST">Central Time (CST)</mat-option>
                                 <mat-option value="MT">Mountain Time (MT)</mat-option>
@@ -60,11 +89,11 @@
 
                         <mat-form-field appearance="outline">
                             <mat-label>Notes</mat-label>
-                            <textarea  formControlName="note" matInput placeholder="write your note" [rows]="3"
+                            <textarea formControlName="note" matInput placeholder="write your note" [rows]="3"
                                 [matTextareaAutosize]="true" required></textarea>
-                                <mat-error *ngIf="true">
-                                        A note  is required!
-                                    </mat-error>
+                            <mat-error *ngIf="true">
+                                A note is required!
+                            </mat-error>
                         </mat-form-field>
                         <button type="submit" (click)="onSubmit()">
                             Submit
@@ -72,9 +101,9 @@
 
                         <ul>
                             <li *ngFor="let item of items | async">
-                              {{ item.name }}
+                                {{ item.name }}
                             </li>
-                          </ul>
+                        </ul>
                     </div>
 
                 </div>

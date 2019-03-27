@@ -68,7 +68,8 @@ const appRoutes: Routes = [
     bootstrap   : [
         AppComponent
     ],
-    providers: [{ provide: APP_BASE_HREF, useValue: '/scheduler/' },{ provide: FirestoreSettingsToken, useValue: {} }]
+    providers: [{ provide: APP_BASE_HREF, useValue: '/scheduler/' },
+    { provide: FirestoreSettingsToken, useValue: {} }]
 })
 export class AppModule
 {   
