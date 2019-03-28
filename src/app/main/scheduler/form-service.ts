@@ -7,8 +7,8 @@ import * as moment from 'moment';
 @Injectable()
 export class FormService {
 
-  protected ASMX_URL_AddEmailAppointment = 'https://tools.brandinstitute.com/wsPanelMembers/wsPanel.asmx/addEmailAppointment_v02';
-  // protected ASMX_URL_AddEmailAppointment = 'http://localhost:55833/wsPanel.asmx/addEmailAppointment_v02';
+  
+  protected ASMX_URL_AddEmailAppointment = 'http://localhost:55833/wsPanel.asmx/addEmailAppointment_v02';
 
   constructor(private httpClient: HttpClient) { }
 
